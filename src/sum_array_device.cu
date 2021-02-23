@@ -30,6 +30,24 @@ void binarySumArray(const int *input, int *output, int n) {
     if (tid == 0) atomicAdd(output, sdata[0]);
 }
 
+__global__
+void nonDivergentSumArray(const int *input, int *output, int n) {
+    __shared__ int sdata[1024];
+
+    unsigned int tid = threadIdx.x;
+    unsigned int i = blockIdx.x * blockDim.x + threadIdx.x;
+    sdata[tid] = input[i];
+    __syncthreads();
+    for(unsigned int s = 1; s< blockDim.x; s*= 2) {
+        int index = 2 * s * tid;
+        if (index < blockDim.x) {
+            sdata[tid] += sdata[tid+s];
+        }
+        __syncthreads();
+    }
+    if (tid == 0) atomicAdd(output, sdata[0]);
+}
+
 
 void cudaSumArray(
     const int *d_input,
@@ -47,4 +65,10 @@ void cudaSumArray(
         dim3 gridSize(n/1024, 1);
         binarySumArray<<<gridSize, blockSize>>>(d_input, d_output, n);
     }
+    if (type == NONDIV) {
+        dim3 blockSize(1024, 1);
+        dim3 gridSize(n/1024, 1);
+        nonDivergentSumArray<<<gridSize, blockSize>>>(d_input, d_output, n);
+    }
+    
 }

@@ -149,6 +149,20 @@ int main(int argc, char *argv[]) {
 
             printf("Size %d binary tree GPU: %f ms\n", n, binary_gpu_ms);
         }
+        
+        if (kernel == "non_divergent" || kernel == "all") {
+            START_TIMER();
+            cudaSumArray(d_input, d_output, n, NONDIV);
+            STOP_RECORD_TIMER(non_divergent_gpu_ms);
+
+            gpuErrChk(cudaMemcpy(&output, d_output, sizeof(int), 
+                cudaMemcpyDeviceToHost));
+            checkSumArray(input, output, n);
+            output = 0;
+            gpuErrChk(cudaMemset(d_output, 0, sizeof(int)));
+
+            printf("Size %d binary tree GPU: %f ms\n", n, non_divergent_gpu_ms);
+        }
     }
     
     
