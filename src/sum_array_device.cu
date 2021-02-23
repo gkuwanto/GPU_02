@@ -5,7 +5,7 @@
 __global__
 void naiveSumArray(const float *input, float *output, int n) {
     float partial_sum = 0.f;
-    for (int i = threadIdx.x; i < size; i += blockDim.x)
+    for (int i = threadIdx.x; i < n; i += blockDim.x)
     {
         float val = input[i];
         partial_sum += val;
