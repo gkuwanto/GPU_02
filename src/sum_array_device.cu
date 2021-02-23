@@ -13,6 +13,23 @@ void naiveSumArray(const int *input, int *output, int n) {
     atomicAdd(output, partial_sum);
 }
 
+__global__
+void binarySumArray(const int *input, int *output, int n) {
+    __shared__ int sdata[1024];
+
+    unsigned int tid = threadIdx.x;
+    unsigned int i = blockIdx.x * blockDim.x + threadIdx.x;
+    sdata[tid] = input[i];
+    __syncthreads();
+    for(unsigned int s = 1; s< blockDim.x; x*= 2) {
+        if (tid % (2*s) == 0) {
+            sdata[tid] += sdata[tid+s];
+        }
+        __syncthreads();
+    }
+}
+
+
 void cudaSumArray(
     const int *d_input,
     int *d_output,
