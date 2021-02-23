@@ -7,7 +7,7 @@ void naiveSumArray(const float *input, float *output, int n) {
     double sum = 0.0;
     //reduce multiple elements per thread
     for (int i = blockIdx.x * blockDim.x + threadIdx.x; 
-            i < N; 
+            i < n; 
             i += blockDim.x * gridDim.x) {
         sum += in[i];
     }
