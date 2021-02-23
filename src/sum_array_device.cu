@@ -21,7 +21,7 @@ void binarySumArray(const int *input, int *output, int n) {
     unsigned int i = blockIdx.x * blockDim.x + threadIdx.x;
     sdata[tid] = input[i];
     __syncthreads();
-    for(unsigned int s = 1; s< blockDim.x; x*= 2) {
+    for(unsigned int s = 1; s< blockDim.x; s*= 2) {
         if (tid % (2*s) == 0) {
             sdata[tid] += sdata[tid+s];
         }
