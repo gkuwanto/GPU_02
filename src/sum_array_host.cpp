@@ -19,6 +19,14 @@ inline void gpuAssert(cudaError_t code, const char *file, int line,
     }
 }
 
+void cpuSumArray(float* input, float& output, int n) {
+    float sum = 0;
+    for (int i = 0; i<n; ++i){
+        sum += input[i];
+    }
+    output = sum;
+}
+
 void checkSumArray(float* input, float result, int n) {
     float output;
     cpuSumArray(input, output, n);
@@ -26,14 +34,6 @@ void checkSumArray(float* input, float result, int n) {
     if (output!=result)
         fprintf(stderr, "Sum is different: CPU %f != %f GPU\n",output, result);
         assert(output==result);
-}
-
-void cpuSumArray(float* input, float& output, int n) {
-    float sum = 0;
-    for (int i = 0; i<n; ++i){
-        sum += input[i];
-    }
-    output = sum;
 }
 
 void randomFill(float *fill, int size) {
