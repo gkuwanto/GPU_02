@@ -45,7 +45,7 @@ TARGETS = sum_array
 
 all: $(TARGETS)
 
-sum_array: sum_array_host.cpp ta_utilities.cpp sum_array.o
+sum_array: sum_array_host.cpp sum_array.o
 	$(CC) $^ -o $@ -O3 $(LDFLAGS) -Wall -I$(CUDA_INC_PATH)
 
 sum_array.o: sum_array_device.cu
