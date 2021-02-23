@@ -32,7 +32,7 @@ void checkSumArray(int* input, int result, int n) {
     cpuSumArray(input, output, n);
 
     if (output!=result)
-        fprintf(stderr, "Sum is different: CPU %f != %f GPU\n",output, result);
+        fprintf(stderr, "Sum is different: CPU %d != %d GPU\n",output, result);
         assert(output==result);
 }
 
@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
         float non_divergent_gpu_ms = -1;
         float sequential_gpu_ms = -1;
 
-        int *input = new float[n];
+        int *input = new int[n];
         int output = 0;
 
         int *d_input;
