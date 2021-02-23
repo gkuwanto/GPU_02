@@ -6,9 +6,10 @@ __global__
 void naiveSumArray(const float *input, float *output, int n) {
     double sum = 0.0;
     //reduce multiple elements per thread
-    int index = blockIdx.x * blockDim.x + threadIdx.x;
     for (int i=1;i<32;i++)
-        sum += input[index + gridDim.x * blockDim.x * i];
+        int index = blockIdx.x * blockDim.x + threadIdx.x + gridDim.x * blockDim.x * i;
+        if (index < n)
+            sum += input[index];
     atomicAdd(output, sum);
 }
 
