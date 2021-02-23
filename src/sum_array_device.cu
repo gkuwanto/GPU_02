@@ -7,7 +7,7 @@ void naiveSumArray(const float *input, float *output, int n) {
     int index = blockIdx.x * blockDim.x * 32 + threadIdx.x
     double sum = 0;
     for (int i = 0; i < 32; i++){
-        sum+=input[index+i*blockDim.x]
+        sum+=input[index+i*blockDim.x];
     }
     atomicAdd(output, sum);
 }
