@@ -9,9 +9,9 @@ void naiveSumArray(const float *input, float *output, int n) {
     for (int i = blockIdx.x * blockDim.x + threadIdx.x; 
             i < N; 
             i += blockDim.x * gridDim.x) {
-        partial_sum += in[i];
+        partial_sum += input[i];
     }
-    atomicAdd(out, partial_sum);
+    atomicAdd(output, partial_sum);
 }
 
 
@@ -19,7 +19,7 @@ void cudaSumArray(
     const float *d_input,
     float *d_output,
     int n,
-    SumArrayImplementation type);
+    SumArrayImplementation type)
 {
     if (type == NAIVE) {
         dim3 blockSize(1024, 1);
