@@ -19,7 +19,7 @@ void cudaSumArray(
     const float *d_input,
     float *d_output,
     int n,
-    SumArrayImplementation type);
+    SumArrayImplementation type)
 {
     if (type == NAIVE) {
         dim3 blockSize(1024, 1);
