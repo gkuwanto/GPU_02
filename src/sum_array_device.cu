@@ -33,7 +33,7 @@ void sequentialSumArray(const float *input, float *output, int n) {
             __syncthreads();
         }
     }
-    if (idx == 0) output = sdata[0];
+    if (idx == 0) atomicAdd(output, sdata[0]);
 }
 
 
