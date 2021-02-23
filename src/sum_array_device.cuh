@@ -4,8 +4,8 @@
 enum SumArrayImplementation { NAIVE, BINARY, NONDIV, SEQUENTIAL };
 
 void cudaSumArray(
-    const float *d_input,
-    float *d_output,
+    const int *d_input,
+    int *d_output,
     int n,
     SumArrayImplementation type);
 

@@ -19,16 +19,16 @@ inline void gpuAssert(cudaError_t code, const char *file, int line,
     }
 }
 
-void cpuSumArray(float* input, float& output, int n) {
-    float sum = 0;
+void cpuSumArray(int* input, int& output, int n) {
+    int sum = 0;
     for (int i = 0; i<n; ++i){
         sum += input[i];
     }
     output = sum;
 }
 
-void checkSumArray(float* input, float result, int n) {
-    float output;
+void checkSumArray(int* input, int result, int n) {
+    int output;
     cpuSumArray(input, output, n);
 
     if (output!=result)
@@ -36,9 +36,9 @@ void checkSumArray(float* input, float result, int n) {
         assert(output==result);
 }
 
-void randomFill(float *fill, int size) {
+void randomFill(int *fill, int size) {
     for (int i = 0; i < size; i++) {
-        float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+        int r = (rand() % 100) - 50; //random range from -50 to 50
         fill[i] = r;
     }
 }
@@ -100,18 +100,18 @@ int main(int argc, char *argv[]) {
         float non_divergent_gpu_ms = -1;
         float sequential_gpu_ms = -1;
 
-        float *input = new float[n];
-        float output = 0;
+        int *input = new float[n];
+        int output = 0;
 
-        float *d_input;
-        float *d_output;
-        gpuErrChk(cudaMalloc(&d_input, n * sizeof(float)));
-        gpuErrChk(cudaMalloc(&d_output, sizeof(float)));
+        int *d_input;
+        int *d_output;
+        gpuErrChk(cudaMalloc(&d_input, n * sizeof(int)));
+        gpuErrChk(cudaMalloc(&d_output, sizeof(int)));
 
         randomFill(input, n);
 
 
-        gpuErrChk(cudaMemcpy(d_input, input, n * sizeof(float), 
+        gpuErrChk(cudaMemcpy(d_input, input, n * sizeof(int), 
             cudaMemcpyHostToDevice));
 
         if (kernel == "cpu" || kernel == "all") {
@@ -127,11 +127,11 @@ int main(int argc, char *argv[]) {
             cudaSumArray(d_input, d_output, n, NAIVE);
             STOP_RECORD_TIMER(naive_gpu_ms);
 
-            gpuErrChk(cudaMemcpy(&output, d_output, sizeof(float), 
+            gpuErrChk(cudaMemcpy(&output, d_output, sizeof(int), 
                 cudaMemcpyDeviceToHost));
             checkSumArray(input, output, n);
             output = 0;
-            gpuErrChk(cudaMemset(d_output, 0, sizeof(float)));
+            gpuErrChk(cudaMemset(d_output, 0, sizeof(int)));
 
             printf("Size %d naive GPU: %f ms\n", n, naive_gpu_ms);
         }
