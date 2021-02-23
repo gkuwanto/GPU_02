@@ -39,7 +39,7 @@ void checkSumArray(float* input, float result, int n) {
 void randomFill(float *fill, int size) {
     for (int i = 0; i < size; i++) {
         float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        fill[i] = 1;
+        fill[i] = r;
     }
 }
 
@@ -118,7 +118,7 @@ int main(int argc, char *argv[]) {
             START_TIMER();
             cpuSumArray(input, output, n);
             STOP_RECORD_TIMER(cpu_ms);
-            printf("Size %d naive CPU: %f ms\n", n, cpu_ms);
+            printf("Size %d CPU only: %f ms\n", n, cpu_ms);
         }
 
 
