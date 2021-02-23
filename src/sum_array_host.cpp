@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
 
         if (kernel == "binary" || kernel == "all") {
             START_TIMER();
-            cudaSumArray(d_input, d_output, n, binary);
+            cudaSumArray(d_input, d_output, n, BINARY);
             STOP_RECORD_TIMER(binary_gpu_ms);
 
             gpuErrChk(cudaMemcpy(&output, d_output, sizeof(int), 
