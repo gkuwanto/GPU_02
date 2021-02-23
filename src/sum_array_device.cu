@@ -9,9 +9,9 @@ void naiveSumArray(const float *input, float *output, int n) {
     for (int i = blockIdx.x * blockDim.x + threadIdx.x; 
             i < n; 
             i += blockDim.x * gridDim.x) {
-        sum += in[i];
+        sum += input[i];
     }
-    atomicAdd(output, sum)
+    atomicAdd(output, sum);
 }
 
 
