@@ -6,11 +6,9 @@ __global__
 void naiveSumArray(const float *input, float *output, int n) {
     double sum = 0.0;
     //reduce multiple elements per thread
-    for (int i = blockIdx.x * blockDim.x + threadIdx.x; 
-            i < n; 
-            i += blockDim.x * gridDim.x) {
-        sum += input[i];
-    }
+    int index = blockIdx.x * blockDim.x + threadIdx.x;
+    for (int i=1;i<32;i++)
+        sum += input[index + gridDim.x * blockDim.x * i];
     atomicAdd(output, sum);
 }
 
@@ -23,7 +21,7 @@ void cudaSumArray(
 {
     if (type == NAIVE) {
         dim3 blockSize(1024, 1);
-        dim3 gridSize(n / 1024, 1);
+        dim3 gridSize(n / 32 / 1024, 1);
         naiveSumArray<<<gridSize, blockSize>>>(d_input, d_output, n);
     }
 }
