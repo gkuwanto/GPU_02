@@ -39,7 +39,7 @@ void checkSumArray(float* input, float result, int n) {
 void randomFill(float *fill, int size) {
     for (int i = 0; i < size; i++) {
         float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        fill[i] = r;
+        fill[i] = i;
     }
 }
 
@@ -122,19 +122,19 @@ int main(int argc, char *argv[]) {
         }
 
 
-        // if (kernel == "naive" || kernel == "all") {
-        //     START_TIMER();
-        //     cudaSumArray(d_input, d_output, n, NAIVE);
-        //     STOP_RECORD_TIMER(naive_gpu_ms);
+        if (kernel == "naive" || kernel == "all") {
+            START_TIMER();
+            cudaSumArray(d_input, d_output, n, NAIVE);
+            STOP_RECORD_TIMER(naive_gpu_ms);
 
-        //     gpuErrChk(cudaMemcpy(&output, d_output, sizeof(float), 
-        //         cudaMemcpyDeviceToHost));
-        //     checkSumArray(input, output, n);
-        //     output = 0;
-        //     gpuErrChk(cudaMemset(d_output, 0, sizeof(float)));
+            gpuErrChk(cudaMemcpy(&output, d_output, sizeof(float), 
+                cudaMemcpyDeviceToHost));
+            checkSumArray(input, output, n);
+            output = 0;
+            gpuErrChk(cudaMemset(d_output, 0, sizeof(float)));
 
-        //     printf("Size %d naive GPU: %f ms\n", n, naive_gpu_ms);
-        // }
+            printf("Size %d naive GPU: %f ms\n", n, naive_gpu_ms);
+        }
 
         if (kernel == "sequential" || kernel == "all") {
             START_TIMER();
