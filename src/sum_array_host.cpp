@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
         kernel == "non_divergent" ||
         kernel == "sequential");
 
-    for (int _i = 10; _i < 21; _i++) {
+    for (int _i = 10; _i < 25; _i++) {
         if (size_to_run != -1 && size_to_run != _i)
             continue;
 
