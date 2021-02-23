@@ -39,7 +39,7 @@ void checkSumArray(float* input, float result, int n) {
 void randomFill(float *fill, int size) {
     for (int i = 0; i < size; i++) {
         float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        fill[i] = r;
+        fill[i] = 1;
     }
 }
 
