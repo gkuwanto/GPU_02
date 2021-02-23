@@ -23,7 +23,7 @@ void cudaSumArray(
 {
     if (type == NAIVE) {
         dim3 blockSize(1024, 1);
-        dim3 gridSize(n / 1024, 1);
+        dim3 gridSize(n / 32 / 1024, 1);
         naiveSumArray<<<gridSize, blockSize>>>(d_input, d_output, n);
     }
 }
