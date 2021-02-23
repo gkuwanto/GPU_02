@@ -27,6 +27,7 @@ void binarySumArray(const int *input, int *output, int n) {
         }
         __syncthreads();
     }
+    if (tid == 0) atomicAdd(output, sdata[0]);
 }
 
 
@@ -40,5 +41,10 @@ void cudaSumArray(
         dim3 blockSize(1024, 1);
         dim3 gridSize(1, 1);
         naiveSumArray<<<gridSize, blockSize>>>(d_input, d_output, n);
+    }
+    if (type == BINARY) {
+        dim3 blockSize(1024, 1);
+        dim3 gridSize(n/1024, 1);
+        binarySumArray<<<gridSize, blockSize>>>(d_input, d_output, n);
     }
 }
