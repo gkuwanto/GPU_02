@@ -59,9 +59,9 @@ int main(int argc, char *argv[]) {
     if (argc == 3)
         kernel = argv[2];
 
-    if (size_to_run>20 || size_to_run<10) {
+    if ((size_to_run>24 || size_to_run<10) && size_to_run != -1) {
         fprintf(stderr,
-            "Program only designed to run sizes 2^10 to 2^20\n");
+            "Program only designed to run sizes 2^10 to 2^24\n");
     }
     
     assert(kernel == "all"        ||
@@ -70,6 +70,11 @@ int main(int argc, char *argv[]) {
         kernel == "binary"        ||
         kernel == "non_divergent" ||
         kernel == "sequential");
+
+    //Print CSV header
+
+    printf("n, cpu, naive, binary, non_divergent, sequential\n");
+
 
     for (int _i = 10; _i < 25; _i++) {
         if (size_to_run != -1 && size_to_run != _i)
@@ -118,7 +123,7 @@ int main(int argc, char *argv[]) {
             START_TIMER();
             cpuSumArray(input, output, n);
             STOP_RECORD_TIMER(cpu_ms);
-            printf("Size %d CPU only: %f ms\n", n, cpu_ms);
+            printf("%d, %f, ", n, cpu_ms);
         }
 
 
@@ -133,7 +138,7 @@ int main(int argc, char *argv[]) {
             output = 0;
             gpuErrChk(cudaMemset(d_output, 0, sizeof(int)));
 
-            printf("Size %d naive GPU: %f ms\n", n, naive_gpu_ms);
+            printf("%f, ", n, naive_gpu_ms);
         }
 
         if (kernel == "binary" || kernel == "all") {
@@ -147,7 +152,7 @@ int main(int argc, char *argv[]) {
             output = 0;
             gpuErrChk(cudaMemset(d_output, 0, sizeof(int)));
 
-            printf("Size %d binary tree GPU: %f ms\n", n, binary_gpu_ms);
+            printf("%f, ", n, binary_gpu_ms);
         }
 
         if (kernel == "non_divergent" || kernel == "all") {
@@ -161,7 +166,7 @@ int main(int argc, char *argv[]) {
             output = 0;
             gpuErrChk(cudaMemset(d_output, 0, sizeof(int)));
 
-            printf("Size %d non-divergent GPU: %f ms\n", n, non_divergent_gpu_ms);
+            printf("%f, ", n, non_divergent_gpu_ms);
         }
         if (kernel == "sequential" || kernel == "all") {
             START_TIMER();
@@ -174,7 +179,7 @@ int main(int argc, char *argv[]) {
             output = 0;
             gpuErrChk(cudaMemset(d_output, 0, sizeof(int)));
 
-            printf("Size %d sequential GPU: %f ms\n", n, sequential_gpu_ms);
+            printf("%f\n", n, sequential_gpu_ms);
         }
     }
     
