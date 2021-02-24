@@ -123,7 +123,7 @@ int main(int argc, char *argv[]) {
             START_TIMER();
             cpuSumArray(input, output, n);
             STOP_RECORD_TIMER(cpu_ms);
-            printf("%d, %f, ", cpu_ms);
+            printf("%d, %f, ", n, cpu_ms);
         }
 
 
