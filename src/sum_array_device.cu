@@ -56,9 +56,9 @@ void sequentialSumArray(const int *input, int *output, int n) {
     unsigned int i = blockIdx.x * blockDim.x + threadIdx.x;
     sdata[tid] = input[i];
     __syncthreads();
-    for(unsigned int s blockDim.x / 2; s>0; s >>= 1) {
+    for(unsigned int s = blockDim.x / 2; s>0; s >>= 1) {
         if(tid < s) {
-            sdata[tid] += sdata[tid + s]
+            sdata[tid] += sdata[tid + s];
         }
         __syncthreads();
     }
