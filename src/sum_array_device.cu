@@ -41,7 +41,7 @@ void nonDivergentSumArray(const int *input, int *output, int n) {
     for(unsigned int s = 1; s< blockDim.x; s*= 2) {
         int index = 2 * s * tid;
         if (index < blockDim.x) {
-            sdata[tid] += sdata[tid+s];
+            sdata[index] += sdata[tid+s];
         }
         __syncthreads();
     }
