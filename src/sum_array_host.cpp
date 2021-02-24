@@ -123,7 +123,7 @@ int main(int argc, char *argv[]) {
             START_TIMER();
             cpuSumArray(input, output, n);
             STOP_RECORD_TIMER(cpu_ms);
-            printf("%d, %f, ", n, cpu_ms);
+            printf("%d, %f, ", cpu_ms);
         }
 
 
@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
             output = 0;
             gpuErrChk(cudaMemset(d_output, 0, sizeof(int)));
 
-            printf("%f, ", n, naive_gpu_ms);
+            printf("%f, ", naive_gpu_ms);
         }
 
         if (kernel == "binary" || kernel == "all") {
@@ -152,7 +152,7 @@ int main(int argc, char *argv[]) {
             output = 0;
             gpuErrChk(cudaMemset(d_output, 0, sizeof(int)));
 
-            printf("%f, ", n, binary_gpu_ms);
+            printf("%f, ", binary_gpu_ms);
         }
 
         if (kernel == "non_divergent" || kernel == "all") {
@@ -166,7 +166,7 @@ int main(int argc, char *argv[]) {
             output = 0;
             gpuErrChk(cudaMemset(d_output, 0, sizeof(int)));
 
-            printf("%f, ", n, non_divergent_gpu_ms);
+            printf("%f, ", non_divergent_gpu_ms);
         }
         if (kernel == "sequential" || kernel == "all") {
             START_TIMER();
@@ -179,7 +179,7 @@ int main(int argc, char *argv[]) {
             output = 0;
             gpuErrChk(cudaMemset(d_output, 0, sizeof(int)));
 
-            printf("%f\n", n, sequential_gpu_ms);
+            printf("%f\n", sequential_gpu_ms);
         }
     }
     
