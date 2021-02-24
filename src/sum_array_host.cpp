@@ -149,7 +149,7 @@ int main(int argc, char *argv[]) {
 
             printf("Size %d binary tree GPU: %f ms\n", n, binary_gpu_ms);
         }
-        
+
         if (kernel == "non_divergent" || kernel == "all") {
             START_TIMER();
             cudaSumArray(d_input, d_output, n, NONDIV);
@@ -161,7 +161,20 @@ int main(int argc, char *argv[]) {
             output = 0;
             gpuErrChk(cudaMemset(d_output, 0, sizeof(int)));
 
-            printf("Size %d binary tree GPU: %f ms\n", n, non_divergent_gpu_ms);
+            printf("Size %d non-divergent GPU: %f ms\n", n, non_divergent_gpu_ms);
+        }
+        if (kernel == "sequential" || kernel == "all") {
+            START_TIMER();
+            cudaSumArray(d_input, d_output, n, SEQUENTIAL);
+            STOP_RECORD_TIMER(sequential_gpu_ms);
+
+            gpuErrChk(cudaMemcpy(&output, d_output, sizeof(int), 
+                cudaMemcpyDeviceToHost));
+            checkSumArray(input, output, n);
+            output = 0;
+            gpuErrChk(cudaMemset(d_output, 0, sizeof(int)));
+
+            printf("Size %d sequential GPU: %f ms\n", n, sequential_gpu_ms);
         }
     }
     
